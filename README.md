@@ -1,1 +1,1 @@
-# Hardware-Software-Intrupt
+# Hardware-Software-Interrupt
