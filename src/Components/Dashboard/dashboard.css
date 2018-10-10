@@ -1,0 +1,23 @@
+.dasboard-system {
+  margin-top: 50px;
+  padding: 15px;
+  position: relative;
+}
+
+.processor {
+  position: absolute;
+  display: inline-block;
+  top: 50px;
+  right: 10px;
+  width: 200px;
+  height: 120px;
+  border: 1px solid;
+  text-align: center;
+  border-radius: 8px;
+}
+
+.processor .process{
+  width: 90%;
+  margin: auto;
+  margin-top: 40px;
+}
