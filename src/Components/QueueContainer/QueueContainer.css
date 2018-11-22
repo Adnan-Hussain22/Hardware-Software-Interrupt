@@ -3,6 +3,11 @@
   min-height: 100px;
   padding: 5px;
   display: inline-block;
+  color: red;
+}
+
+.queue-container h3 {
+  color: inherit;
 }
 
 .queue-container ul {
@@ -32,8 +37,24 @@
   border-radius: 6px;
 }
 
+.queue-container.ready-queue {
+  position: absolute;
+  top: 200px;
+}
+
+.queue-container.ready-queue ul {
+  min-width: 390px;
+  min-height: 100px;
+}
+
 .queue-container.block-queue {
   position: absolute;
-  bottom: -160px;
+  top: -40px;
   left: 500px;
+  color: red;
+}
+
+.queue-container.block-queue ul {
+  max-width: 300px;
+  min-height: 100px;
 }
