@@ -30,9 +30,6 @@ class App extends Component {
     const { Ready_Queue, processes, step } = this.state;
     return (
       <div className="App">
-        {/* {this.renderHeader()}
-        {!processes && <Input inputProcesses={this.inputProcesses} />}
-        {processes && <Dashboard processes={processes}/>} */}
         {this.renderSteps(step)}
       </div>
     );

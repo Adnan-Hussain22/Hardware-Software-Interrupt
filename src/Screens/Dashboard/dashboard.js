@@ -2,7 +2,7 @@ import React from "react";
 import { Modal } from "antd";
 import "antd/dist/antd.css";
 import Queue from "../../Helpers/Queue/Queue";
-import {QueueContainer} from "../../Components";
+import { QueueContainer } from "../../Components";
 import "./dashboard.css";
 import { toast, ToastContainer } from "react-toastify";
 import {
@@ -22,7 +22,7 @@ export default class Dasboard extends React.Component {
     this.state = {
       Ready_Queue: new Queue(),
       Block_Queue: new Queue(),
-      no_Ofprocesses: props.processes,
+      no_Ofprocesses: props.processes || 5000,
       interruptType: props.interruptType,
       processor: null,
       timeoutTimer: null,
@@ -37,24 +37,24 @@ export default class Dasboard extends React.Component {
   }
 
   componentDidMount() {
-    const { no_Ofprocesses, Ready_Queue } = this.state;
-    for (let i = 0; i < no_Ofprocesses; i++) {
-      const number = i + 1;
-      Ready_Queue.Enqueue({
-        processId: number,
-        processName: `Process # ${number}`,
-        executionCount: Math.ceil(Math.random() * 10)
-      });
-    }
-    const currentProcess = Ready_Queue.Dequeue();
-    this.setState({
-      processor: currentProcess,
-      timeoutTimer: setInterval(this.handleTimout, 5000),
-      blockTimer: setInterval(this.handleReleaseProcess, 5000),
-      systemTimer: setInterval(this.handlecheckSystemStatus, 20),
-      processorLoader: document.getElementById("processorLoader"),
-      processorLoaderIncreasing: false
-    });
+    // const { no_Ofprocesses, Ready_Queue } = this.state;
+    // for (let i = 0; i < no_Ofprocesses; i++) {
+    //   const number = i + 1;
+    //   Ready_Queue.Enqueue({
+    //     processId: number,
+    //     processName: `Process # ${number}`,
+    //     executionCount: Math.ceil(Math.random() * 10)
+    //   });
+    // }
+    // const currentProcess = Ready_Queue.Dequeue();
+    // this.setState({
+    //   processor: currentProcess,
+    //   timeoutTimer: setInterval(this.handleTimout, 5000),
+    //   blockTimer: setInterval(this.handleReleaseProcess, 5000),
+    //   systemTimer: setInterval(this.handlecheckSystemStatus, 20),
+    //   processorLoader: document.getElementById("processorLoader"),
+    //   processorLoaderIncreasing: false
+    // });
     // this.handleCreateNotification(
     //   "info",
     //   `${currentProcess.processName} Exectution Started`
@@ -239,50 +239,62 @@ export default class Dasboard extends React.Component {
     console.log("Render Ready_Queue***", Ready_Queue);
     return (
       <div className="dashboard-screen">
-        {/* <ToastContainer closeButton={false} /> */}
         {this.renderHeader()}
-        <div className="dasboard-system">
-          {Ready_Queue && (
-            <div className="readyqueue-container">
-              <QueueContainer
-                processes={Ready_Queue.QueueArray}
-                text="Ready Queue"
-                name="ready-queue"
-              />
-              <div className="interrrupt-handled-images">
-                {!interruptHandledActive && (
-                  <img src={BlockQueueInterruptHandledlight} />
-                )}
-                {interruptHandledActive && (
-                  <img src={BlockQueueInterruptHandledDark} />
-                )}
-              </div>
-              <div className="process-dispatched-images">
-                {!processDispatchActice && <img src={ProcessDipatchedLight} />}
-                {processDispatchActice && <img src={ProcessDipatchedDark} />}
-              </div>
-
-              <div className="process-timout-images">
-                {!timeOutActive && <img src={ProcessTimeoutLight} />}
-                {timeOutActive && <img src={ProcessTimeoutDark} />}
+        <div className="row">
+          <div className="dasboard-system container col-md-10 col-lg-10 col-sm-12">
+            <div className="row">
+              {Block_Queue && (
+                <div className="blockqueue-container container">
+                  <QueueContainer
+                    processes={Block_Queue.QueueArray}
+                    text="Block Queue"
+                    name="block-queue"
+                    className="col-lg-10 col-md-10 col-sm-12"
+                  />
+                  <div className="process-interrrupted-images col-lg-10 col-md-10 col-sm-12">
+                    {!blockqueueActive && (
+                      <img src={BlockQueueInterruptLight} />
+                    )}
+                    {blockqueueActive && <img src={BlockQueueInterruptDark} />}
+                  </div>
+                </div>
+              )}
+            </div>
+            <div className="row">
+              {Ready_Queue && (
+                <div className="queue-container col-lg-6 col-md-6 col-sm-6 ready-queue-container">
+                  <QueueContainer
+                    processes={Ready_Queue.QueueArray}
+                    text="Ready Queue"
+                    name="ready-queue"
+                    className=""
+                  />
+                  <div className="interrrupt-handled-images">
+                    {!interruptHandledActive && (
+                      <img src={BlockQueueInterruptHandledlight} />
+                    )}
+                    {interruptHandledActive && (
+                      <img src={BlockQueueInterruptHandledDark} />
+                    )}
+                  </div>
+                  <div className="process-dispatched-images">
+                    {!processDispatchActice && (
+                      <img src={ProcessDipatchedLight} />
+                    )}
+                    {processDispatchActice && (
+                      <img src={ProcessDipatchedDark} />
+                    )}
+                    {!timeOutActive && <img src={ProcessTimeoutLight} />}
+                    {timeOutActive && <img src={ProcessTimeoutDark} />}
+                  </div>
+                </div>
+              )}
+              <div className="col-md-6 col-lg-6 col-sm-6 processor-container">
+                {this.renderProcessor(processor)}
               </div>
             </div>
-          )}
-          {Block_Queue && (
-            <div className="blockqueue-container">
-              <QueueContainer
-                processes={Block_Queue.QueueArray}
-                text="Block Queue"
-                name="block-queue"
-              />
-              <div className="process-interrrupted-images">
-                {!blockqueueActive && <img src={BlockQueueInterruptLight} />}
-                {blockqueueActive && <img src={BlockQueueInterruptDark} />}
-              </div>
-            </div>
-          )}
-          {this.renderProcessor(processor)}
-          {this.renderBlockMessage()}
+            {this.renderBlockMessage()}
+          </div>
         </div>
         {this.renderFooter()}
         <Modal

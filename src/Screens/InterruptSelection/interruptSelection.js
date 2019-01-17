@@ -59,7 +59,7 @@ class InterruptSelection extends React.Component {
   handleProcessesSelected = () => {
     const { processes, interruptType } = this.state;
     if (interruptType && processes) {
-      this.props.handleInputProcesses(interruptType,processes);
+      this.props.handleInputProcesses(interruptType, processes);
     }
   };
 
@@ -94,7 +94,9 @@ class InterruptSelection extends React.Component {
   renderHeader = () => {
     return (
       <div className="header" id="interruptHeader">
-        <h3 style={{color:'white',fontWeight:"800"}}>INTERRUPT HANDLING</h3>
+        <h3 style={{ color: "white", fontWeight: "800" }}>
+          INTERRUPT HANDLING
+        </h3>
       </div>
     );
   };
@@ -105,28 +107,34 @@ class InterruptSelection extends React.Component {
     //   handleStartHardwareInterrupt
     // } = this.props;
     return (
-      <div className="selection">
-        <div className="interrupt-type">
-          <span style={{ fontWeight: "900" }}>SELECT</span> INTERRUPT TYPE
-        </div>
-        <div className="border-vertical" />
-        <div className="border-container" />
-        <div className="interrupt-options">
-          <div
-            className="software-interrupt"
-            onClick={() => {
-              this.handleInterruptSelection("Software Interrupt");
-            }}
-          >
-            Software Interrupt
-          </div>
-          <div
-            className="hardware-interrupt"
-            onClick={() => {
-              this.handleInterruptSelection("Hardware Interrupt");
-            }}
-          >
-            Hardware Interrupt
+      <div className="row">
+        <div className="container">
+          <div className="selection col-md-10 col-lg-10 col-sm-12">
+            <div className="interrupt-type">
+              <span style={{ fontWeight: "900" }}>SELECT</span> INTERRUPT TYPE
+            </div>
+            <div className="border-vertical" />
+            <div className="row">
+              <div className="border-container container col-md-10 col-lg-10 col-sm-12" />
+            </div>
+            <div className="interrupt-options container">
+              <div
+                className="software-interrupt"
+                onClick={() => {
+                  this.handleInterruptSelection("Software Interrupt");
+                }}
+              >
+                Software Interrupt
+              </div>
+              <div
+                className="hardware-interrupt"
+                onClick={() => {
+                  this.handleInterruptSelection("Hardware Interrupt");
+                }}
+              >
+                Hardware Interrupt
+              </div>
+            </div>
           </div>
         </div>
       </div>

@@ -38,23 +38,35 @@
 }
 
 .queue-container.ready-queue {
-  position: absolute;
-  top: 200px;
+  position: relative;
 }
 
 .queue-container.ready-queue ul {
-  min-width: 390px;
+  min-width: 320px;
   min-height: 100px;
 }
 
 .queue-container.block-queue {
-  position: absolute;
-  top: -40px;
-  left: 500px;
   color: red;
 }
 
 .queue-container.block-queue ul {
   max-width: 300px;
   min-height: 100px;
+}
+
+.blockqueue-container {
+  display: flex;
+  justify-content: center;
+}
+
+.blockqueue-container ul {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 340px !important;
+}
+
+.ready-queue-container {
+  top: 50px;
+  position: relative;
 }

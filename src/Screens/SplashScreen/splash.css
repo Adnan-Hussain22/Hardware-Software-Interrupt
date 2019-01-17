@@ -4,6 +4,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
 }
 
 .splash-screen .btn-start {
@@ -38,8 +39,8 @@
 }
 
 .splash-screen .btn-start {
-  position: absolute;
-  top: 65%;
+  outline: none;
+  margin-top: 20px;
   width: 90px;
   height: 40px;
   border-radius: 20px;

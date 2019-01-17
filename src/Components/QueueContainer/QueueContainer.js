@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./QueueContainer.css";
-class App extends Component {
+class QueueContainer extends Component {
   constructor(props) {
     super();
     this.state = {
@@ -10,9 +10,10 @@ class App extends Component {
 
   render() {
     const { processes } = this.state;
+    const { className } = this.props;
     console.log("processes*****=>", processes);
     return (
-      <div className={"queue-container " + this.props.name}>
+      <div className={className + " queue-container " + this.props.name}>
         <h3 style={{ textAlign: "center" }}>{this.props.text}</h3>
         <ul>
           {processes.length != 0 &&
@@ -29,4 +30,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default QueueContainer;
