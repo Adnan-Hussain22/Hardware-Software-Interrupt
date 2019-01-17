@@ -4,7 +4,6 @@ import "antd/dist/antd.css";
 import Queue from "../../Helpers/Queue/Queue";
 import { QueueContainer } from "../../Components";
 import "./dashboard.css";
-import { toast, ToastContainer } from "react-toastify";
 import {
   BlockQueueInterruptDark,
   BlockQueueInterruptHandledDark,
@@ -15,7 +14,6 @@ import {
   ProcessTimeoutDark,
   ProcessTimeoutLight
 } from "../../Helpers/Assets";
-import "react-toastify/dist/ReactToastify.css";
 export default class Dasboard extends React.Component {
   constructor(props) {
     super(props);
@@ -37,42 +35,27 @@ export default class Dasboard extends React.Component {
   }
 
   componentDidMount() {
-    // const { no_Ofprocesses, Ready_Queue } = this.state;
-    // for (let i = 0; i < no_Ofprocesses; i++) {
-    //   const number = i + 1;
-    //   Ready_Queue.Enqueue({
-    //     processId: number,
-    //     processName: `Process # ${number}`,
-    //     executionCount: Math.ceil(Math.random() * 10)
-    //   });
-    // }
-    // const currentProcess = Ready_Queue.Dequeue();
-    // this.setState({
-    //   processor: currentProcess,
-    //   timeoutTimer: setInterval(this.handleTimout, 5000),
-    //   blockTimer: setInterval(this.handleReleaseProcess, 5000),
-    //   systemTimer: setInterval(this.handlecheckSystemStatus, 20),
-    //   processorLoader: document.getElementById("processorLoader"),
-    //   processorLoaderIncreasing: false
-    // });
-    // this.handleCreateNotification(
-    //   "info",
-    //   `${currentProcess.processName} Exectution Started`
-    // );
+    const { no_Ofprocesses, Ready_Queue } = this.state;
+    for (let i = 0; i < no_Ofprocesses; i++) {
+      const number = i + 1;
+      Ready_Queue.Enqueue({
+        processId: number,
+        processName: `Process # ${number}`,
+        executionCount: Math.ceil(Math.random() * 10)
+      });
+    }
+    const currentProcess = Ready_Queue.Dequeue();
+    this.setState({
+      processor: currentProcess,
+      timeoutTimer: setInterval(this.handleTimout, 5000),
+      blockTimer: setInterval(this.handleReleaseProcess, 5000),
+      systemTimer: setInterval(this.handlecheckSystemStatus, 20),
+      processorLoader: document.getElementById("processorLoader"),
+      processorLoaderIncreasing: false
+    });
   }
 
   handleDispatchingToProcessor = process => {
-    const {
-      processorLoaderIncreasing,
-      processorLoader,
-      processorLoaderWidth
-    } = this.state;
-    console.log("Process Dispatche:=>", process);
-    // this.handleCreateNotification("info",`${process.processName} Execution Started`);
-    // this.handleCreateNotification(
-    //   "info",
-    //   `${process.processName} Exectution Started`
-    // );
     this.setState({ processor: process });
     setTimeout(() => {
       this.setState({ processDispatchActice: true });
@@ -94,15 +77,6 @@ export default class Dasboard extends React.Component {
         setTimeout(() => {
           this.setState({ timeOutActive: false });
         }, 1000);
-        // this.handleCreateNotification(
-        //   "warning",
-        //   `${processor.processName} Timeout`
-        // );
-      } else {
-        // this.handleCreateNotification(
-        //   "success",
-        //   `${processor.processName} Has Beed Terminated Successfully`
-        // );
       }
     }
     if (Ready_Queue.Count()) {
@@ -112,14 +86,9 @@ export default class Dasboard extends React.Component {
 
   handleBlockProcess = () => {
     const { Block_Queue, Ready_Queue, processor } = this.state;
-    console.log("Blocking Process");
     if (processor) {
       Block_Queue.Enqueue(processor);
       let status = Ready_Queue.Dequeue();
-      // this.handleCreateNotification(
-      //   "warning",
-      //   `${processor.processName} Blocked Due To Resource Demand`
-      // );
       this.setState({
         Block_Queue,
         processor: null,
@@ -140,7 +109,6 @@ export default class Dasboard extends React.Component {
 
   handleReleaseProcess = () => {
     const { Block_Queue, Ready_Queue } = this.state;
-    console.log("releaseBlockedProcesses******");
     if (Block_Queue.Count()) {
       const blocked = Block_Queue.Dequeue();
       this.setState({ interruptHandledActive: true });
@@ -148,63 +116,8 @@ export default class Dasboard extends React.Component {
         this.setState({ interruptHandledActive: false });
       }, 700);
       Ready_Queue.Enqueue(blocked);
-      // this.handleCreateNotification(
-      //   "info",
-      //   `${blocked.processName} Released From Block Queue`
-      // );
-      console.log("Releasing Process " + blocked.processName);
     }
   };
-
-  handleCreateNotification = (type, message) => {
-    switch (type) {
-      case "info": {
-        toast.info(message, {
-          position: "bottom-left",
-          autoClose: 2000,
-          hideProgressBar: true,
-          closeOnClick: false,
-          pauseOnHover: true,
-          draggable: false
-        });
-        break;
-      }
-      case "success": {
-        toast.success(message, {
-          position: "bottom-left",
-          autoClose: 2000,
-          hideProgressBar: true,
-          closeOnClick: false,
-          pauseOnHover: true,
-          draggable: false
-        });
-        break;
-      }
-      case "warning": {
-        toast.warn(message, {
-          position: "bottom-left",
-          autoClose: 2000,
-          hideProgressBar: true,
-          closeOnClick: false,
-          pauseOnHover: true,
-          draggable: false
-        });
-        break;
-      }
-      case "error": {
-        toast.error(message, {
-          position: "bottom-left",
-          autoClose: 2000,
-          hideProgressBar: true,
-          closeOnClick: false,
-          pauseOnHover: true,
-          draggable: false
-        });
-        break;
-      }
-    }
-  };
-
   handlecheckSystemStatus = () => {
     const { Ready_Queue, Block_Queue, processor } = this.state;
     if (!Ready_Queue.Count() && !Block_Queue.Count() && !processor) {
@@ -220,10 +133,6 @@ export default class Dasboard extends React.Component {
     clearInterval(blockTimer);
     clearInterval(systemTimer);
     this.setState({ timeoutTimer: null, systemTimer: null, blockTimer: null });
-    // this.handleCreateNotification(
-    //   "warning",
-    //   `System is shutting down`
-    // );
   }
 
   render() {
@@ -377,16 +286,4 @@ export default class Dasboard extends React.Component {
       />
     );
   }
-
-  // blinker() {
-  //   const blinker = document.getElementById("blink-message");
-  //   blinker.style.visibility = "visible";
-  //   setInterval(() => {
-  //     console.log("Blinking");
-  //     console.log(blinker.style.visibility)
-  //     if (blinker.style.visibility === "visible")
-  //       blinker.style.visibility = "hidden";
-  //     else blinker.style.visibility = "visible";
-  //   }, 500);
-  // }
 }
